@@ -1,101 +1,79 @@
+// ===== 歴史データ =====
 const wars = {
-
-  // ====================
-  // 中世（5世紀〜15世紀）
-  // 主な戦争・衝突
-  // 出典：年表中の十字軍・百年戦争など代表例を抜粋 :contentReference[oaicite:1]{index=1}
   medieval: [
     {
-      name: "第一次十字軍",
+      name: "十字軍",
+      year: "1096–1291年",
       lat: 31.8,
       lon: 35.2,
-      year: "1096–1099",
-      cause: "聖地エルサレム奪還を目的としたキリスト教勢力の東方遠征。"
-    },
-    {
-      name: "第2〜第6回十字軍",
-      lat: 31.8,
-      lon: 35.2,
-      year: "1147–1270",
-      cause: "聖地支配を巡る宗教的・領土的対立。"
-    },
-    {
-      name: "百年戦争",
-      lat: 48.8,
-      lon: 2.3,
-      year: "1337–1453",
-      cause: "フランス王位継承権を巡る英仏間の王権・領土争い。"
+      cause: "宗教対立",
+      detail: "ヨーロッパ諸国が聖地エルサレムを巡って行った遠征。"
     }
   ],
 
-
-  // ====================
-  // 近世〜近代（16〜18世紀中心）
-  // 主要戦争例：三十年戦争、ユグノー戦争、オランダ独立戦争など :contentReference[oaicite:2]{index=2}
   early: [
     {
-      name: "ユグノー戦争",
-      lat: 46.6,
-      lon: 2.4,
-      year: "1562–1598",
-      cause: "フランス国内におけるカトリックとプロテスタントの宗教対立。"
-    },
-    {
-      name: "オランダ独立戦争",
-      lat: 52.1,
-      lon: 5.1,
-      year: "1568–1648",
-      cause: "ハプスブルク支配からの独立を求めるオランダ反乱軍とスペイン軍の衝突。"
-    },
-    {
       name: "三十年戦争",
-      lat: 50.0,
-      lon: 10.0,
-      year: "1618–1648",
-      cause: "宗教改革後のカトリック勢力とプロテスタント諸国の対立、皇帝権力と諸侯の抗争。"
+      year: "1618–1648年",
+      lat: 50.1,
+      lon: 14.4,
+      cause: "宗教と国家権力の対立",
+      detail: "近代国家体制成立のきっかけとなった戦争。"
     }
   ],
 
-
-  // ====================
-  // 現代（20世紀後期〜現在）
-  // 現代戦争例：朝鮮戦争、ベトナム戦争、アフガン戦争、ウクライナ戦争など :contentReference[oaicite:3]{index=3}
   modern: [
     {
-      name: "朝鮮戦争",
-      lat: 37.5,
-      lon: 127.0,
-      year: "1950–1953",
-      cause: "朝鮮半島における南北対立を巡る軍事衝突。"
-    },
-    {
-      name: "ベトナム戦争",
-      lat: 16.0,
-      lon: 108.0,
-      year: "1955–1975",
-      cause: "共産主義北と反共主義南による長期戦争。"
-    },
-    {
-      name: "アフガニスタン戦争",
-      lat: 33.9,
-      lon: 67.7,
-      year: "2001–2021",
-      cause: "9/11後の米軍主導のテロ対策軍事作戦。"
-    },
-    {
-      name: "イラク戦争",
-      lat: 33.3,
-      lon: 44.4,
-      year: "2003–2011",
-      cause: "大量破壊兵器疑惑を理由に米軍主導で侵攻。"
-    },
-    {
-      name: "ウクライナ戦争",
-      lat: 49.0,
-      lon: 32.0,
-      year: "2014–現在",
-      cause: "ロシアによる侵攻と領土支配を巡る対立。"
+      name: "第二次世界大戦",
+      year: "1939–1945年",
+      lat: 52.5,
+      lon: 13.4,
+      cause: "領土拡張とイデオロギー対立",
+      detail: "史上最大規模の戦争で、戦後の国際秩序を形成した。"
     }
   ]
-
 };
+
+// ===== 地図初期化 =====
+const map = L.map('map').setView([20, 0], 2);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+let markers = [];
+
+// ===== マーカー色 =====
+function getIcon(color) {
+  return L.icon({
+    iconUrl: `https://maps.google.com/mapfiles/ms/icons/${color}-dot.png`,
+    iconSize: [32, 32]
+  });
+}
+
+const eraColor = {
+  medieval: "blue",
+  early: "green",
+  modern: "red"
+};
+
+// ===== 時代切り替え =====
+function loadEra(era) {
+  markers.forEach(m => map.removeLayer(m));
+  markers = [];
+
+  wars[era].forEach(w => {
+    const marker = L.marker([w.lat, w.lon], {
+      icon: getIcon(eraColor[era])
+    }).addTo(map);
+
+    marker.bindPopup(`
+      <h3>${w.name}</h3>
+      <p><b>年代：</b>${w.year}</p>
+      <p><b>原因：</b>${w.cause}</p>
+      <p>${w.detail}</p>
+    `);
+
+    markers.push(marker);
+  });
+}
+
+// 初期表示
+loadEra('modern');

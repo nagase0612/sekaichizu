@@ -1,28 +1,39 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>World Conflict Map by Era</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
-  <style>
-    body { margin:0; font-family:sans-serif; }
-    #controls { padding:10px; background:#111; color:white; }
-    button { margin-right:5px; padding:6px 10px; }
-    #map { height:90vh; }
-  </style>
+<meta charset="UTF-8">
+<title>歴史がわかる世界地図</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+<style>
+body { margin:0; font-family:sans-serif; }
+#controls {
+  background:#111; color:#fff; padding:10px;
+}
+#map { height:85vh; }
+</style>
 </head>
 <body>
 
 <div id="controls">
-  <b>時代選択：</b>
-  <button onclick="loadEra('medieval')">中世</button>
-  <button onclick="loadEra('early')">近世</button>
-  <button onclick="loadEra('modern')">現代</button>
+  年：<input type="range" id="yearRange" min="1500" max="2025" value="2025">
+  <span id="yearLabel"></span>
+
+  地域：
+  <select id="regionSelect">
+    <option value="all">すべて</option>
+    <option value="ヨーロッパ">ヨーロッパ</option>
+    <option value="東アジア">東アジア</option>
+    <option value="アメリカ">アメリカ</option>
+    <option value="中東">中東</option>
+    <option value="世界">世界</option>
+  </select>
 </div>
 
 <div id="map"></div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="script.js"></script>
+<script src="map_data.js"></script>
+<script src="main.js"></script>
+
 </body>
 </html>

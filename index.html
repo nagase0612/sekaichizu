@@ -2,12 +2,20 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>World Conflict Map by Era</title>
+  <title>世界史クリックマップ</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
   <style>
     body { margin:0; font-family:sans-serif; }
-    #controls { padding:10px; background:#111; color:white; }
-    button { margin-right:5px; padding:6px 10px; }
+    #controls {
+      padding:10px;
+      background:#111;
+      color:white;
+    }
+    button {
+      margin-right:5px;
+      padding:6px 10px;
+      cursor:pointer;
+    }
     #map { height:90vh; }
   </style>
 </head>
@@ -23,31 +31,6 @@
 <div id="map"></div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="map_data.js"></script>
-<script>
-const map = L.map('map').setView([20, 0], 2);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-let markers = [];
-
-function loadEra(era) {
-  markers.forEach(m => map.removeLayer(m));
-  markers = [];
-
-  wars[era].forEach(w => {
-    const marker = L.marker([w.lat, w.lon]).addTo(map)
-      .bindPopup(
-        `<b>${w.name}</b><br>
-         年代：${w.year}<br>
-         原因：${w.cause}`
-      );
-    markers.push(marker);
-  });
-}
-
-// 初期表示
-loadEra('modern');
-</script>
-
+<script src="main.js"></script>
 </body>
 </html>
